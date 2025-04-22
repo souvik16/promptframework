@@ -178,7 +178,7 @@
 
     <div class="output" id="outputBox"></div>
 
-    <button id="downloadBtn" onclick="downloadPrompt()">⬇️ Download Prompt</button>
+    <button id="downloadBtn" onclick="downloadPrompt()">⬇️ Check Output On ChatGpt</button>
   </div>
 
   <script>
@@ -217,13 +217,9 @@ ${evaluation}`;
     }
 
     function downloadPrompt() {
-      const blob = new Blob([generatedPrompt], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "SCOPE_Prompt.txt";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const encodedPrompt = encodeURIComponent(generatedPrompt);
+      const url = `https://chat.openai.com/?prompt=${encodedPrompt}`;
+      window.open(url, '_blank');
     }
   </script>
 </body>

@@ -76,7 +76,7 @@
 </div>
 <button onclick="addInput()">➕ Add More</button>
 <button onclick="generateOutput()">✨ Generate Prompt</button>
-<button onclick="downloadPrompt()">⬇️ Download</button>
+<button id="chatgptBtn" onclick="downloadPrompt()" style="display:none;">⬇️ Check Output On ChatGpt</button>
 <div class="output" id="output" style="display:none;"></div>
 <script>
     function addInput() {
@@ -108,18 +108,15 @@ ${value}
       if (result) {
         output.style.display = 'block';
         output.textContent = result;
+    document.getElementById('chatgptBtn').style.display = 'inline-block';
       }
     }
 
     function downloadPrompt() {
-      const text = document.getElementById('output').textContent;
-      const blob = new Blob([text], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'Styled_Custom_Prompt.txt';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const prompt = document.getElementById('output').textContent;
+  const encodedPrompt = encodeURIComponent(prompt);
+      const url = `https://chat.openai.com/?prompt=${encodedPrompt}`;
+      window.open(url, '_blank');
     }
   </script>
 </body>
