@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Prompt Framework Library v2</title>
+<link href="https://unpkg.com/lucide@latest/dist/lucide.css" rel="stylesheet"/>
+<style>
+    :root {
+      --bg-light: #f9fafe;
+      --bg-dark: #1e1e2f;
+      --text-light: #2d3436;
+      --text-dark: #ffffff;
+      --primary: #6c5ce7;
+      --radius: 16px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      z-index: 100;
+    }
+
+    .navbar h1 {
+      font-size: 20px;
+      color: var(--primary);
+      margin: 0;
+    }
+
+    .toggle-theme {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .search-bar {
+      width: 100%;
+      margin-bottom: 24px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+
+    .category-card {
+      background: linear-gradient(135deg, #e0e0ff, #ffffff);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      transition: 0.3s;
+    }
+
+    .category-header {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+
+    .category-header .icon {
+      margin-right: 8px;
+      color: var(--primary);
+    }
+
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .framework-card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .framework-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .framework-card h3 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: var(--primary);
+    }
+
+    .framework-card p {
+      font-size: 14px;
+      color: var(--text-light);
+    }
+
+    .tags {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .tag {
+      background: #dfe6e9;
+      color: #2d3436;
+      padding: 4px 8px;
+      font-size: 12px;
+      border-radius: 8px;
+    }
+
+    .sample-toggle {
+      font-size: 13px;
+      color: #6c5ce7;
+      cursor: pointer;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .sample-output {
+      display: none;
+      margin-top: 8px;
+      font-size: 13px;
+      background: #f9fafe;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      display: none;
+      z-index: 200;
+    }
+
+    body.dark .framework-card {
+      background: #2c2c3a;
+      color: white;
+    }
+
+    body.dark .framework-card p {
+      color: #b2bec3;
+    }
+
+    body.dark .sample-output {
+      background: #333;
+      color: white;
+    }
+  
+.cta {
+  display: inline-block;
+  margin-top: 12px;
+  background-color: #6c5ce7;
+  color: #fff !important;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s ease;
+}
+.cta:hover {
+  background-color: #594ae2;
+}
+</style>
+</head>
+<body>
+<div onclick="window.location.href='createown.html'" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #6c5ce7;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 1000;">
+  ✨ Create Your Own Prompt
+</div>
+<div class="navbar">
+<h1 style="text-align:center; font-size:28px; color:#6c5ce7; margin:auto; font-weight:bold;">📚 Prompt Frameworks</h1>
+<button class="toggle-theme" onclick="toggleTheme()">🌓</button>
+</div>
+<div class="container">
+<div class="category-card">
+<div class="category-header"><i class="icon" data-lucide="layers"></i> Classic Frameworks</div>
+<div class="framework-grid">
+<div class="framework-card"><h3>ERA – Expectation, Role, Action</h3><p>Define what you want, assign a role, and specify the task.</p><div class="tags"><span class="tag">Quick</span><span class="tag">Clarity</span></div><a class="cta" href="era.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>APE – Action, Purpose, Expectation</h3><p>Focus on the task, its goal, and what outcome you expect.</p><div class="tags"><span class="tag">Purpose</span></div><a class="cta" href="ape.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>TAE – Task, Action, Expectation</h3><p>Break down any task into action steps with expected results.</p><div class="tags"><span class="tag">Instructional</span></div><a class="cta" href="tae.html">🛠️ Generate Your Own Prompt</a></div>
+</div>
+</div>
+<div class="category-card">
+<div class="category-header"><i class="icon" data-lucide="target"></i> Strategic Frameworks</div>
+<div class="framework-grid">
+<div class="framework-card"><h3>CARE – Context, Action, Result, Example</h3><p>Provide background, action plan, and sample-based output.</p><div class="tags"><span class="tag">Structured</span></div><a class="cta" href="care.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>RACE – Role, Action, Context, Expectation</h3><p>Frame assistant's role, action, background, and outcome.</p><div class="tags"><span class="tag">Goal-based</span></div><a class="cta" href="race.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>RISE – Role, Input, Steps, Expectation</h3><p>Define role, input, and exact steps to guide completion.</p><div class="tags"><span class="tag">Checklist</span></div><a class="cta" href="rise.html">🛠️ Generate Your Own Prompt</a></div>
+</div>
+</div>
+<div class="category-card">
+<div class="category-header"><i class="icon" data-lucide="layers-3"></i> Enhanced Frameworks</div>
+<div class="framework-grid">
+<div class="framework-card"><h3>ROSES – Role, Objective, Scenario, Expected Solution, Steps</h3><p>Detailed prompting for contextual or complex goals.</p><div class="tags"><span class="tag">Multi-step</span><span class="tag">Advanced</span></div><a class="cta" href="roses.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>COAST – Context, Objective, Actions, Scenario, Task</h3><p>Great for scenario-based or action-driven prompts.</p><div class="tags"><span class="tag">Contextual</span></div><a class="cta" href="coast.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>TRACE – Task, Request, Action, Context, Example</h3><p>Clarity and flow for structured task execution prompts.</p><div class="tags"><span class="tag">Flow</span></div><a class="cta" href="trace.html">🛠️ Generate Your Own Prompt</a></div>
+</div>
+</div>
+<div class="category-card">
+<div class="category-header"><i class="icon" data-lucide="bar-chart"></i> Advanced Frameworks</div>
+<div class="framework-grid">
+<div class="framework-card"><h3>PRIME – Purpose, Requirements, Instructions, Metrics, Examples</h3><p>Highly detailed prompt structure with KPIs and criteria.</p><div class="tags"><span class="tag">Business</span><span class="tag">Precise</span></div><a class="cta" href="prime.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>FOCUS – Function, Outcome, Context, Usage, Specifics</h3><p>Define the why, where, and how of every instruction.</p><div class="tags"><span class="tag">Functional</span></div><a class="cta" href="focus.html">🛠️ Generate Your Own Prompt</a></div>
+</div>
+</div>
+<div class="category-card">
+<div class="category-header"><i class="icon" data-lucide="school"></i> Expert Frameworks</div>
+<div class="framework-grid">
+<div class="framework-card"><h3>CLEAR – Context, Limitations, Examples, Actions, Results</h3><p>Best for enterprise writing and documentation prompts.</p><div class="tags"><span class="tag">Enterprise</span><span class="tag">Structured</span></div><a class="cta" href="clear.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>SCOPE – Scenario, Context, Objective, Process, Evaluation</h3><p>Scenario-driven tasks with goal and evaluation methods.</p><div class="tags"><span class="tag">Evaluative</span></div><a class="cta" href="scope.html">🛠️ Generate Your Own Prompt</a></div>
+<div class="framework-card"><h3>GUIDE – Goal, Use-case, Instructions, Details, Examples</h3><p>Best for educational, SOPs, and instructional content.</p><div class="tags"><span class="tag">Tutorial</span><span class="tag">Step-by-step</span></div><a class="cta" href="guide.html">🛠️ Generate Your Own Prompt</a></div>
+</div>
+</div>
+<button class="back-to-top" onclick="scrollToTop()">↑</button>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    lucide.createIcons();
+
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (prefersDark) document.body.classList.add('dark');
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onscroll = function () {
+      const btn = document.querySelector('.back-to-top');
+      if (document.documentElement.scrollTop > 300) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    };
+
+    function filterFrameworks() {
+      const value = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.framework-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(value) ? 'block' : 'none';
+      });
+    }
+
+    function toggleSample(id) {
+      const block = document.getElementById(id);
+      block.style.display = block.style.display === 'block' ? 'none' : 'block';
+    }
+  </script>
+<footer style="text-align:center; margin:40px 0; font-size:13px; color:#555;">
+  © 2025 Prompt Frameworks Creator by Souvik Samanta. Built with ❤️ for smarter AI prompting.
+</footer>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TAE Prompt Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #00b894;
+      --primary-dark: #009879;
+      --accent: #55efc4;
+      --bg: #f2fcfa;
+      --text-dark: #2d3436;
+      --text-muted: #636e72;
+      --white: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: var(--white);
+      width: 90%;
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 40px;
+      border-radius: 18px;
+      box-shadow: 0 6px 24px var(--shadow);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 30px;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text-dark);
+    }
+
+    .explanation {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 4px 0 10px 0;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 14px;
+      resize: vertical;
+      font-size: 14px;
+      font-family: inherit;
+      border-radius: 10px;
+      border: 1px solid #dfe6e9;
+      line-height: 1.5;
+      background-color: var(--white);
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.15);
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+    }
+
+    .output {
+      margin-top: 30px;
+      background: #f9fffc;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #c0f5e5;
+      white-space: pre-wrap;
+      font-size: 15px;
+      color: var(--text-dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    #downloadBtn {
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 24px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      label {
+        font-size: 15px;
+      }
+
+      textarea {
+        font-size: 13px;
+        padding: 12px;
+      }
+
+      button {
+        font-size: 15px;
+        padding: 13px;
+        border-radius: 8px;
+      }
+
+      .output {
+        font-size: 14px;
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✅ TAE Prompt Generator</h1>
+
+    <label for="task">Task</label>
+    <div class="explanation">What is the core task or objective?</div>
+    <textarea id="task" placeholder="e.g., Create a detailed outline for a blog article on AI trends..."></textarea>
+
+    <label for="action">Action</label>
+    <div class="explanation">What should ChatGPT specifically do?</div>
+    <textarea id="action" placeholder="e.g., List the top 5 trends and explain their relevance..."></textarea>
+
+    <label for="expectation">Expectation</label>
+    <div class="explanation">What kind of output/result is expected?</div>
+    <textarea id="expectation" placeholder="e.g., Bullet point list with short descriptions..."></textarea>
+
+    <button onclick="generatePrompt()">🚀 Generate Prompt</button>
+
+    <div class="output" id="outputBox"></div>
+
+    <button id="downloadBtn" onclick="downloadPrompt()">⬇️ Download Prompt</button>
+  </div>
+
+  <script>
+    let generatedPrompt = "";
+
+    function generatePrompt() {
+      const task = document.getElementById("task").value.trim();
+      const action = document.getElementById("action").value.trim();
+      const expectation = document.getElementById("expectation").value.trim();
+
+      if (!task || !action || !expectation) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      generatedPrompt =
+`##Task:
+${task}
+
+##Action:
+${action}
+
+##Expectation:
+${expectation}`;
+
+      document.getElementById("outputBox").textContent = generatedPrompt;
+      document.getElementById("downloadBtn").style.display = "block";
+    }
+
+    function downloadPrompt() {
+      const blob = new Blob([generatedPrompt], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "TAE_Prompt.txt";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>

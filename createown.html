@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Styled Prompt Generator</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4fdfc;
+      margin: 0;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #00cec9;
+      margin-bottom: 30px;
+    }
+    .input-group {
+      margin-bottom: 24px;
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .label {
+      font-weight: bold;
+      font-size: 16px;
+      color: #2d3436;
+      margin-bottom: 6px;
+    }
+    .subtext {
+      font-size: 13px;
+      color: #636e72;
+      margin-bottom: 8px;
+    }
+    textarea {
+      width: 100%;
+      padding: 14px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid #dfe6e9;
+      resize: vertical;
+      font-family: inherit;
+      background: #fefefe;
+    }
+    button {
+      background-color: #00cec9;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 12px 8px 0 0;
+    }
+    .output {
+      white-space: pre-wrap;
+      background: #e0f7f7;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 24px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<h1>🛠️ Styled Prompt Builder</h1>
+<div id="form-container">
+<div class="input-group">
+<input class="label" placeholder="e.g. Context, Goal, Instruction" style="border: none; font-weight: bold; font-size: 16px; color: #2d3436; margin-bottom: 6px; width: 100%;" title="Enter a short section title" type="text" value="Enter Your Header"/>
+<textarea placeholder="Write your Details here..."></textarea>
+</div>
+</div>
+<button onclick="addInput()">➕ Add More</button>
+<button onclick="generateOutput()">✨ Generate Prompt</button>
+<button onclick="downloadPrompt()">⬇️ Download</button>
+<div class="output" id="output" style="display:none;"></div>
+<script>
+    function addInput() {
+      const container = document.getElementById('form-container');
+      const group = document.createElement('div');
+      group.className = 'input-group';
+      group.innerHTML = `
+        <input class="label" type="text" value="Enter Your Header Here" style="border: none; font-weight: bold; font-size: 16px; color: #2d3436; margin-bottom: 6px; width: 100%;" />
+        <div class="subtext">Add explanation</div>
+        <textarea placeholder="Write your Details here..."></textarea>
+      `;
+      container.appendChild(group);
+    }
+
+    function generateOutput() {
+      const output = document.getElementById('output');
+      const groups = document.querySelectorAll('.input-group');
+      let result = '';
+      groups.forEach(group => {
+        const label = group.querySelector('.label').value.trim();
+        const value = group.querySelector('textarea').value.trim();
+        if (label && value) {
+          result += `##${label}:
+${value}
+
+`;
+        }
+      });
+      if (result) {
+        output.style.display = 'block';
+        output.textContent = result;
+      }
+    }
+
+    function downloadPrompt() {
+      const text = document.getElementById('output').textContent;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'Styled_Custom_Prompt.txt';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
